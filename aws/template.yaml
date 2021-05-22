@@ -158,6 +158,21 @@ Resources:
                                         -   ':'
                                         -   Ref: 'AWS::AccountId'
                                         -   ':table/users'
+                        -   Effect: Allow
+                            Action:
+                                -   'dynamodb:Scan'
+                                -   'dynamodb:DeleteItem'
+                                -   'dynamodb:GetItem'
+                                -   'dynamodb:PutItem'
+                                -   'dynamodb:UpdateItem'
+                            Resource:
+                                'Fn::Join':
+                                    -   ''
+                                    -   -   'arn:aws:dynamodb:'
+                                        -   Ref: 'AWS::Region'
+                                        -   ':'
+                                        -   Ref: 'AWS::AccountId'
+                                        -   ':table/comments'
     booksTable:
         Type: 'AWS::DynamoDB::Table'
         Properties:
@@ -181,6 +196,19 @@ Resources:
                     AttributeType: S
             KeySchema:
                 -   AttributeName: userid
+                    KeyType: HASH
+            ProvisionedThroughput:
+                ReadCapacityUnits: 5
+                WriteCapacityUnits: 5
+    commentsTable:
+        Type: 'AWS::DynamoDB::Table'
+        Properties:
+            TableName: comment
+            AttributeDefinitions:
+                -   AttributeName: commentid
+                    AttributeType: S
+            KeySchema:
+                -   AttributeName: commentid
                     KeyType: HASH
             ProvisionedThroughput:
                 ReadCapacityUnits: 5

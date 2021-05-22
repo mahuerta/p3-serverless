@@ -9,6 +9,8 @@ AWS.config.update({
 const docClient = new AWS.DynamoDB.DocumentClient();
 const tableUsers = 'users';
 const tableBooks = 'books';
+const tableComments = 'comments';
+const tableBookComments = 'book-comments';
 
 // USERS
 const getAllUsers = () => {
@@ -34,17 +36,14 @@ const addUser = (data) => {
 
 const getUserByNick = (nick) => {
     const params = {
-        TableName: tableUsers,
-        FilterExpression: "nick = :nick", 
         ExpressionAttributeValues: {
-            ":nick": {
-                S: JSON.stringify(nick)
-            }
-        },
-        ReturnValues: "ALL_OLD" // Returns the item content before it was deleted
+            ":nick": nick
+        }, 
+        FilterExpression: "nick = :nick", 
+        TableName: tableUsers
     };
 
-    return docClient.get(params).promise();
+    return docClient.scan(params).promise();
 };
 
 
@@ -178,29 +177,43 @@ const addCommentToBook = async (bookid, data) => {
 
     data.commentid = uid.v1()
 
-    book.comments.push({
-        commentid: data.commentid,
-        comment: data.comment,
-        score: data.score,
-        user: {
-            "userid": user.id,
-            "nick": user.nick
+    book.Item.comments.push({
+        "commentid": data.commentid,
+        "comment": data.comment,
+        "score": data.score,
+        "user": {
+            "userid": user.Items[0].userid,
+            "nick": user.Items[0].nick
         }
     });
 
-    const params = {
+    const paramsBook = {
         TableName: tableBooks,
         Key: {
-            "bookid": data.bookid
+            "bookid": bookid
         },
         UpdateExpression: "set comments = :comments",
         ExpressionAttributeValues: {
-            ":comments": book.comments
+            ":comments": book.Item.comments
         },
         ReturnValues: "ALL_NEW" 
     };
 
-    return docClient.update(params).promise();
+    const paramsComment = {
+        TableName: tableComments,
+        Item: {
+            "commentId": uuid.v1(),
+            "comment": data.comment,
+            "score": data.score,
+            "user":  {
+                "userid": user.Items[0].userid,
+                "nick": user.Items[0].nick
+            }
+        }
+    };
+
+    docClient.update(paramsBook).promise();
+    return docClient.put(paramsComment).promise()
 
 };
 
@@ -238,7 +251,7 @@ const getBook = (bookid) => {
         ExpressionAttributeValues: {
             ":bookid": bookid
         },
-        ReturnValues: "ALL_NEW"
+        ReturnValues: "ALL_OLD"
     };
 
     return docClient.get(params).promise();
@@ -286,6 +299,7 @@ module.exports = {
     updateUser,
     deleteUser,
     getUser,
+    getUserByNick,
     getAllBooks,
     addBook,
     updateBook,

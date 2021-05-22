@@ -9,7 +9,7 @@ exports.usersHandler = (event, context, callback) => {
            // if(event.path.includes("comments")){
              //   getUserComments(event.pathParameters.userid, callback);
             //}else
-             if (!!event.pathParameters && !!event.pathParameters.userid) {
+            if (!!event.pathParameters && !!event.pathParameters.userid) {
                 getUser(event.pathParameters.userid, callback);
             } else {
                 getAllUsers(callback);

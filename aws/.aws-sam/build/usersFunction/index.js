@@ -10,6 +10,8 @@ exports.usersHandler = (event, context, callback) => {
              //   getUserComments(event.pathParameters.userid, callback);
             //}else
              if (!!event.pathParameters && !!event.pathParameters.userid) {
+                getUserByNick(event.pathParameters.userid, callback);
+            } else if (!!event.pathParameters && !!event.pathParameters.userid) {
                 getUser(event.pathParameters.userid, callback);
             } else {
                 getAllUsers(callback);
@@ -86,6 +88,17 @@ const getUserComments = (userId, callback) => {
 
 const getUser = (userId, callback) => {
     dbManager.getUser(userId)
+    .then((res) => {
+        sendResponse(200, res, callback);
+    })
+    .catch((err) => {
+        console.log(err);
+        sendResponse(200, err, callback);
+    });
+};
+
+const getUserByNick = (nick, callback) => {
+    dbManager.getUserByNick(nick)
     .then((res) => {
         sendResponse(200, res, callback);
     })
