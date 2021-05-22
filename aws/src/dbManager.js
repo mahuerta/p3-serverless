@@ -55,7 +55,7 @@ const getUser = (userid) => {
         ExpressionAttributeValues: {
             ":userid": userid
         },
-        ReturnValues: "ALL_OLD" // Returns the item content before it was deleted
+        ReturnValues: "ALL_OLD"
     };
 
     return docClient.get(params).promise();
@@ -63,7 +63,7 @@ const getUser = (userid) => {
 
 const getUserComments = async (userid) => {
     const user = await getUser(userid);
-    if (!user.Item) {  // {}
+    if (!user.Item) { 
         throw new LibraryException("User not found", 404);
     };
 
@@ -89,7 +89,7 @@ const updateUser = (data) => {
         ExpressionAttributeValues: {
             ":e": data.email
         },
-        ReturnValues: "ALL_NEW" // Returns the item content before it was updated
+        ReturnValues: "ALL_NEW" 
     };
 
     return docClient.update(params).promise();
@@ -116,7 +116,7 @@ const deleteUser = async (userid) => {
         ExpressionAttributeValues: {
             ":userid": userid
         },
-        ReturnValues: "ALL_OLD" // Returns the item content before it was deleted
+        ReturnValues: "ALL_OLD" 
     };
 
     return docClient.delete(params).promise();
@@ -169,8 +169,8 @@ const addCommentToBook = async (bookid, data) => {
             "commentid": uuid.v1(),
             "comment": data.comment,
             "score": data.score,
-            "userid": user.Items[0].userid, // se obtiene por userId 
-            "userNick": user.Items[0].nick, 
+            "userid": user.Items[0].userid, 
+            "userNick": user.Items[0].nick, // El userNick no se puede actualizar 
             "bookid": book.Item.bookid
         }
     };
@@ -195,7 +195,7 @@ const deleteCommentFromBook = async (bookid, commentid, data) => {
         ExpressionAttributeValues: {
             ":commentid": commentid
         },
-        ReturnValues: "ALL_OLD" // Returns the item content before it was deleted
+        ReturnValues: "ALL_OLD"
     };
 
     return docClient.delete(params).promise();
