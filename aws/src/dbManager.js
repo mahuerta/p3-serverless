@@ -64,7 +64,7 @@ const getUser = (userid) => {
 const getUserComments = async (userid) => {
     const user = await getUser(userid);
     if (!user) {
-        throwException("User not found", 404);
+        throw new LibraryException("User not found", 404);
     };
 
     const params = {
@@ -100,7 +100,7 @@ const deleteUser = async (userid) => {
     const comments = await getUserComments(userid);
 
     if(comments.Count>0){
-        throwException("User has comments", 409);
+        throw new LibraryException("User has comments", 409);
     }
 
     const params = {
@@ -151,12 +151,12 @@ const addCommentToBook = async (bookid, data) => {
     const book = await getBook(bookid);
     
     if (!book) {
-        throwException("Book not found", 404);
+        throw new LibraryException("Book not found", 404);
     };
 
     const user = await getUserByNick(data.userNick);
     if (!user) {
-        throwException("User not found", 404);
+        throw new LibraryException("User not found", 404);
     };
 
     const params = {
@@ -179,7 +179,7 @@ const deleteCommentFromBook = async (bookid, commentid, data) => {
     const book = await getBook(bookid);
     
     if (!book) {
-        throwException("Book not found", 404);
+        throw new LibraryException("Book not found", 404);
     };
 
     const params = {
@@ -265,12 +265,12 @@ const deleteBook = (bookid) => {
     return docClient.delete(params).promise();
 };
 
-function throwException(message, status) {
-    throw {
+
+ function LibraryException(message, status) {
+    return {
         "message": message,
         "status": status
     };
-    
  }
  
 module.exports = {
