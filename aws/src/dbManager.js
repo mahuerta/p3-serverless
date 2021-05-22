@@ -63,7 +63,7 @@ const getUser = (userid) => {
 
 const getUserComments = async (userid) => {
     const user = await getUser(userid);
-    if (!user) {
+    if (!user.Item) {  // {}
         throw new LibraryException("User not found", 404);
     };
 
@@ -96,7 +96,11 @@ const updateUser = (data) => {
 };
 
 const deleteUser = async (userid) => {
-    // Comprobar si tiene o no comentarios y dar un error si los tiene.
+    const user = await getUser(userid);
+    if (!user.Item) {
+        throw new LibraryException("User not found", 404);
+    };
+
     const comments = await getUserComments(userid);
 
     if(comments.Count>0){
@@ -155,7 +159,7 @@ const addCommentToBook = async (bookid, data) => {
     };
 
     const user = await getUserByNick(data.userNick);
-    if (!user) {
+    if (user.Count == 0) {
         throw new LibraryException("User not found", 404);
     };
 

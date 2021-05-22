@@ -55,7 +55,6 @@ exports.booksHandler = (event, context, callback) => {
             }
             break;
 
-            break;
         default:
             sendResponse(400, `Unsupported method ${event.httpMethod}`, callback);
     }
