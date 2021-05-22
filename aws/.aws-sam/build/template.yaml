@@ -32,6 +32,11 @@ Resources:
           Properties:
             Path: /users/{userid}
             Method: DELETE
+        lambdaGetAllBooks:
+          Type: Api
+          Properties:
+            Path: /books
+            Method: GET
       Policies:
       - Version: '2012-10-17'
         Statement:
@@ -50,6 +55,64 @@ Resources:
               - ':'
               - Ref: AWS::AccountId
               - :table/users
+  booksFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: nodejs12.x
+      Handler: index.booksHandler
+      CodeUri: booksFunction
+      Events:
+        lambdaAddBook:
+          Type: Api
+          Properties:
+            Path: /books
+            Method: POST
+        lambdaUpdateBook:
+          Type: Api
+          Properties:
+            Path: /books/{bookid}
+            Method: PUT
+        lambdaGetBook:
+          Type: Api
+          Properties:
+            Path: /books/{bookid}
+            Method: GET
+        lambdaDeleteBook:
+          Type: Api
+          Properties:
+            Path: /books/{bookid}
+            Method: DELETE
+      Policies:
+      - Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - dynamodb:Scan
+          - dynamodb:DeleteItem
+          - dynamodb:GetItem
+          - dynamodb:PutItem
+          - dynamodb:UpdateItem
+          Resource:
+            Fn::Join:
+            - ''
+            - - 'arn:aws:dynamodb:'
+              - Ref: AWS::Region
+              - ':'
+              - Ref: AWS::AccountId
+              - :table/books
+  booksTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: books
+      AttributeDefinitions:
+      - AttributeName: bookid
+        AttributeType: S
+      KeySchema:
+      - AttributeName: bookid
+        KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
   usersTable:
     Type: AWS::DynamoDB::Table
     Properties:
