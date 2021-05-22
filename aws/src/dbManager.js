@@ -38,7 +38,7 @@ const getUserByNick = (nick) => {
         FilterExpression: "nick = :nick", 
         ExpressionAttributeValues: {
             ":nick": {
-                S: nick
+                S: JSON.stringify(nick)
             }
         },
         ReturnValues: "ALL_OLD" // Returns the item content before it was deleted
