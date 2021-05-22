@@ -61,7 +61,12 @@ const getUser = (userid) => {
     return docClient.get(params).promise();
 };
 
-const getUserComments = (userid) => {
+const getUserComments = async (userid) => {
+    const user = await getUser(userid);
+    if (!user) {
+        // Retornar error
+    };
+
     const params = {
         ExpressionAttributeValues: {
             ":userid": userid
