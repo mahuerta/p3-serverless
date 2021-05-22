@@ -6,7 +6,9 @@ const dbManager = require('./dbManager');
 exports.usersHandler = (event, context, callback) => {
     switch (event.httpMethod) {
         case 'GET' :
-            if (!!event.pathParameters && !!event.pathParameters.userid) {
+            if(event.path.includes("comments")){
+                getUserComments(event.pathParameters.userid, callback);
+            }else if (!!event.pathParameters && !!event.pathParameters.userid) {
                 getUser(event.pathParameters.userid, callback);
             } else {
                 getAllUsers(callback);
@@ -36,13 +38,23 @@ exports.booksHandler = (event, context, callback) => {
             }
             break;
         case 'POST':
-            addBook(event.body, callback);
+            if (!!event.pathParameters && !!event.pathParameters.bookid) {
+                addCommentToBook(event.pathParameters.bookid, event.body, callback);
+            } else {
+                addBook(event.body, callback);
+            }
             break;
         case 'PUT':
             updateBook(event.pathParameters.bookid, event.body, callback);
             break;
         case 'DELETE':
-            deleteBook(event.pathParameters.bookid, callback);
+            if (!!event.pathParameters && !!event.pathParameters.commentid) {
+                deleteCommentFromBook(event.pathParameters.bookid, event.pathParameters.commentid, callback);
+            } else {
+                deleteBook(event.pathParameters.bookid, callback);
+            }
+            break;
+
             break;
         default:
             sendResponse(400, `Unsupported method ${event.httpMethod}`, callback);
@@ -51,6 +63,17 @@ exports.booksHandler = (event, context, callback) => {
 
 const getAllUsers = (callback) => {
     dbManager.getAllUsers()
+    .then((res) => {
+        sendResponse(200, res, callback);
+    })
+    .catch((err) => {
+        console.log(err);
+        sendResponse(200, err, callback);
+    });
+};
+
+const getUserComments = (userId, callback) => {
+    dbManager.getUserComments(userId)
     .then((res) => {
         sendResponse(200, res, callback);
     })
@@ -144,6 +167,31 @@ const addBook = (data, callback) => {
         console.log(err);
         sendResponse(200, err, callback);
     });
+};
+
+const addCommentToBook = (bookid, data, callback) => {
+    data = JSON.parse(data);
+
+    dbManager.addCommentToBook(bookid, data)
+    .then((res) => {
+        sendResponse(200, res, callback);
+    })
+    .catch((err) => {
+        console.log(err);
+        sendResponse(200, err, callback);
+    });
+};
+
+const deleteCommentFromBook = (bookid, commentid, callback) => {
+    dbManager.deleteCommentFromBook(bookid, commentid)
+    .then((res) => {
+        sendResponse(200, res, callback);
+    })
+    .catch((err) => {
+        console.log(err);
+        sendResponse(200, err, callback);
+    });
+
 };
 
 const updateBook = (bookid, data, callback) => {

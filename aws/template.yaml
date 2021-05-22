@@ -39,7 +39,12 @@ Resources:
                     Type: Api
                     Properties:
                         Path: /users/{userid}
-                        Method: DELETE                
+                        Method: DELETE    
+                lambdaGetUserComments:
+                    Type: Api
+                    Properties:
+                        Path: /users/{userid}/comments
+                        Method: GET
 
             Policies:
                 # Policies to allow the execution of the indicated actions to the table described in Resource
@@ -98,7 +103,17 @@ Resources:
                     Type: Api
                     Properties:
                         Path: /books/{bookid}
-                        Method: DELETE                
+                        Method: DELETE       
+                lambdaAddCommentToBook:
+                    Type: Api
+                    Properties:
+                        Path: /books/{bookid}/comments
+                        Method: POST          
+                lambdaDeleteCommentFromBook:
+                    Type: Api
+                    Properties:
+                        Path: /books/{bookid}/comments/{commentid}
+                        Method: DELETE  
 
             Policies:
                 # Policies to allow the execution of the indicated actions to the table described in Resource

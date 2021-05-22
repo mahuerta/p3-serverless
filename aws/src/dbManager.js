@@ -32,6 +32,23 @@ const addUser = (data) => {
     return docClient.put(params).promise();
 };
 
+const getUserByNick = (nick) => {
+    const params = {
+        TableName: tableUsers,
+        Key: {
+            "nick": nick
+        },
+        ConditionExpression: "nick = :nick",
+        ExpressionAttributeValues: {
+            ":nick": nick
+        },
+        ReturnValues: "ALL_OLD" // Returns the item content before it was deleted
+    };
+
+    return docClient.get(params).promise();
+};
+
+
 const getUser = (userid) => {
     const params = {
         TableName: tableUsers,
@@ -47,6 +64,41 @@ const getUser = (userid) => {
 
     return docClient.get(params).promise();
 };
+
+const getUserComments = (userid) => {
+    const user = await getUser(data.userNick);
+    if (!user) {
+        // Retornar error
+    };
+/*
+    const params = {
+        TableName: tableBooks,
+        FilterExpression: "#k_comments.#k_ = :v_Compatible_RAM",
+        ExpressionAttributeNames: {
+            "#k_comments": "comments",
+            "#k_": "RAM"
+        },
+        ExpressionAttributeValues: {
+            ":v_Compatible_RAM": "RAM1"
+        }
+
+
+
+        ConditionExpression: "comments.user.userid = :userid",
+        ExpressionAttributeValues: {
+            ":userid": userid
+        },
+        AttributesToGet: [
+            "comments",
+            "bookid"
+        ],
+        ReturnValues: "ALL_OLD" // Returns the item content before it was deleted
+    };
+    */
+
+    return docClient.get(params).promise();
+};
+
 
 const updateUser = (data) => {
     const params = {
@@ -84,7 +136,11 @@ const deleteUser = (userid) => {
 // BOOKS
 const getAllBooks = () => {
     const params = {
-        TableName: tableBooks
+        TableName: tableBooks,
+        AttributesToGet: [
+            "title",
+            "bookid"
+        ]
     };
 
     return docClient.scan(params).promise();
@@ -99,11 +155,76 @@ const addBook = (data) => {
             "title": data.title,
             "summary": data.summary,
             "publisher": data.publisher,
-            "publicationYear": data.publicationYear
+            "publicationYear": data.publicationYear,
+            "comments": []
         }
     };
 
     return docClient.put(params).promise();
+};
+
+const addCommentToBook = (bookid, data) => {
+    const book = await getBook(bookid);
+    
+    if (!book) {
+        // Retornar error
+    };
+
+    const user = await getUserByNick(data.userNick);
+    if (!user) {
+        // Retornar error
+    };
+
+    data.commentid = uid.v1()
+
+    book.comments.push({
+        commentid: data.commentid,
+        comment: data.comment,
+        score: data.score,
+        user: {
+            "userid": user.id,
+            "nick": user.nick
+        }
+    });
+
+    const params = {
+        TableName: tableBooks,
+        Key: {
+            "bookid": data.bookid
+        },
+        UpdateExpression: "set comments = :comments",
+        ExpressionAttributeValues: {
+            ":comments": book.comments
+        },
+        ReturnValues: "ALL_NEW" 
+    };
+
+    return docClient.update(params).promise();
+
+};
+
+const deleteCommentFromBook = (bookid, commentid, data) => {
+    const book = await getBook(bookid);
+    
+    if (!book) {
+        // Retornar error
+    };
+
+    book.comments = book.comments.filter(comment => comment.commentid !== commentid);
+
+    const params = {
+        TableName: tableBooks,
+        Key: {
+            "bookid": data.bookid
+        },
+        UpdateExpression: "set comments = :comments",
+        ExpressionAttributeValues: {
+            ":comments": book.comments
+        },
+        ReturnValues: "ALL_NEW" 
+    };
+
+    return docClient.update(params).promise();
 };
 
 const getBook = (bookid) => {
@@ -168,5 +289,7 @@ module.exports = {
     addBook,
     updateBook,
     deleteBook,
-    getBook
+    getBook,
+    addCommentToBook,
+    deleteCommentFromBook
 };
