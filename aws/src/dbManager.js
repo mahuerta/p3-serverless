@@ -151,12 +151,12 @@ const addCommentToBook = async (bookid, data) => {
     const book = await getBook(bookid);
     
     if (!book) {
-        // Retornar error
+        throwException("Book not found", 404);
     };
 
     const user = await getUserByNick(data.userNick);
     if (!user) {
-        // Retornar error
+        throwException("User not found", 404);
     };
 
     const params = {
@@ -179,7 +179,7 @@ const deleteCommentFromBook = async (bookid, commentid, data) => {
     const book = await getBook(bookid);
     
     if (!book) {
-        // Retornar error
+        throwException("Book not found", 404);
     };
 
     const params = {

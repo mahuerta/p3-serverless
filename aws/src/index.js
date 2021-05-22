@@ -79,7 +79,7 @@ const getUserComments = (userId, callback) => {
     })
     .catch((err) => {
         console.log(err);
-        sendResponse(200, err, callback);
+        sendResponse(err.status, err.message, callback);
     });
 };
 
@@ -178,7 +178,7 @@ const addCommentToBook = (bookid, data, callback) => {
     })
     .catch((err) => {
         console.log(err);
-        sendResponse(200, err, callback);
+        sendResponse(err.status, err.message, callback);
     });
 };
 
@@ -189,7 +189,7 @@ const deleteCommentFromBook = (bookid, commentid, callback) => {
     })
     .catch((err) => {
         console.log(err);
-        sendResponse(200, err, callback);
+        sendResponse(err.status, err.message, callback);
     });
 
 };
