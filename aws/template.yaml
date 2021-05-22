@@ -70,7 +70,7 @@ Resources:
             # This function uses the Nodejs v8.10 runtime.
             Runtime: nodejs12.x
             # This is the Lambda function's handler.
-            Handler: index.usersHandler
+            Handler: index.booksHandler
             # The location of the Lambda function code.
             CodeUri: ./src
             # Event sources to attach to this function. In this case, we are attaching
