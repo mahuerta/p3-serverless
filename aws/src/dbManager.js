@@ -207,7 +207,7 @@ const getBook = async (bookid) => {
     };
 
     const book = await docClient.get(params).promise();
-    book.comments = comments;
+    book.Item.comments = comments;
     return book;
 };
 
