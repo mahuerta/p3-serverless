@@ -28,11 +28,12 @@ exports.usersHandler = (event, context, callback) => {
 
 exports.booksHandler = (event, context, callback) => {
     switch (event.httpMethod) {
-        case 'GET' && !(!!event.pathParameters.bookid):
-            getAllBooks(callback);
-            break;
-        case 'GET' && !!event.pathParameters.bookid:
-            getBook(callback);
+        case 'GET' :
+            if (!!event.pathParameters && !!event.pathParameters.bookid) {
+                getBook(event.pathParameters.bookid, callback);
+            } else {
+                getAllBooks(callback);
+            }
             break;
         case 'POST':
             addBook(event.body, callback);
