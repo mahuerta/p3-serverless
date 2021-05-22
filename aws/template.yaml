@@ -203,7 +203,7 @@ Resources:
     commentsTable:
         Type: 'AWS::DynamoDB::Table'
         Properties:
-            TableName: comment
+            TableName: comments
             AttributeDefinitions:
                 -   AttributeName: commentid
                     AttributeType: S
