@@ -161,6 +161,7 @@ const addCommentToBook = async (bookid, data) => {
             "comment": data.comment,
             "score": data.score,
             "userid": user.Items[0].userid, // se obtiene por userId 
+            "userNick": user.Items[0].nick, 
             "bookid": book.Item.bookid
         }
     };
