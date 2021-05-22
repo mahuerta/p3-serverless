@@ -65,7 +65,7 @@ const getUser = (userid) => {
     return docClient.get(params).promise();
 };
 
-const getUserComments = (userid) => {
+const getUserComments = async (userid) => {
     const user = await getUser(data.userNick);
     if (!user) {
         // Retornar error
@@ -163,7 +163,7 @@ const addBook = (data) => {
     return docClient.put(params).promise();
 };
 
-const addCommentToBook = (bookid, data) => {
+const addCommentToBook = async (bookid, data) => {
     const book = await getBook(bookid);
     
     if (!book) {
@@ -203,7 +203,7 @@ const addCommentToBook = (bookid, data) => {
 
 };
 
-const deleteCommentFromBook = (bookid, commentid, data) => {
+const deleteCommentFromBook = async (bookid, commentid, data) => {
     const book = await getBook(bookid);
     
     if (!book) {

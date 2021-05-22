@@ -32,10 +32,10 @@ Resources:
           Properties:
             Path: /users/{userid}
             Method: DELETE
-        lambdaGetAllBooks:
+        lambdaGetUserComments:
           Type: Api
           Properties:
-            Path: /books
+            Path: /users/{userid}/comments
             Method: GET
       Policies:
       - Version: '2012-10-17'
@@ -62,6 +62,11 @@ Resources:
       Handler: index.booksHandler
       CodeUri: booksFunction
       Events:
+        lambdaGetAllBooks:
+          Type: Api
+          Properties:
+            Path: /books
+            Method: GET
         lambdaAddBook:
           Type: Api
           Properties:
@@ -81,6 +86,16 @@ Resources:
           Type: Api
           Properties:
             Path: /books/{bookid}
+            Method: DELETE
+        lambdaAddCommentToBook:
+          Type: Api
+          Properties:
+            Path: /books/{bookid}/comments
+            Method: POST
+        lambdaDeleteCommentFromBook:
+          Type: Api
+          Properties:
+            Path: /books/{bookid}/comments/{commentid}
             Method: DELETE
       Policies:
       - Version: '2012-10-17'
