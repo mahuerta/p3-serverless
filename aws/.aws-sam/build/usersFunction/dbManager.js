@@ -35,12 +35,11 @@ const addUser = (data) => {
 const getUserByNick = (nick) => {
     const params = {
         TableName: tableUsers,
-        Key: {
-            "nick": nick
-        },
-        ConditionExpression: "nick = :nick",
+        FilterExpression: "nick = :nick", 
         ExpressionAttributeValues: {
-            ":nick": nick
+            ":nick": {
+                S: JSON.stringify(nick)
+            }
         },
         ReturnValues: "ALL_OLD" // Returns the item content before it was deleted
     };
@@ -117,6 +116,8 @@ const updateUser = (data) => {
 };
 
 const deleteUser = (userid) => {
+    // Comprobar si tiene o no comentarios y dar un error si los tiene.
+
     const params = {
         TableName: tableUsers,
         Key: {
