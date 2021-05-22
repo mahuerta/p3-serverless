@@ -25,6 +25,28 @@ exports.usersHandler = (event, context, callback) => {
     }
 };
 
+exports.booksHandler = (event, context, callback) => {
+    switch (event.httpMethod) {
+        case 'GET' && !(!!event.pathParameters.bookid):
+            getAllBooks(callback);
+            break;
+        case 'GET' && !!event.pathParameters.bookid:
+            getBook(callback);
+            break;
+        case 'POST':
+            addBook(event.body, callback);
+            break;
+        case 'PUT':
+            updateBook(event.pathParameters.bookid, event.body, callback);
+            break;
+        case 'DELETE':
+            deleteBook(event.pathParameters.bookid, callback);
+            break;
+        default:
+            sendResponse(400, `Unsupported method ${event.httpMethod}`, callback);
+    }
+};
+
 const getAllUsers = (callback) => {
     dbManager.getAllUsers()
     .then((res) => {
@@ -76,6 +98,68 @@ const updateUser = (userid, data, callback) => {
 
 const deleteUser = (userid, callback) => {
     dbManager.deleteUser(userid)
+    .then((res) => {
+        sendResponse(200, res, callback);
+    })
+    .catch((err) => {
+        console.log(err);
+        sendResponse(200, err, callback);
+    });
+};
+
+
+// CRUD DE BOOKS
+const getAllBooks = (callback) => {
+    dbManager.getAllBooks()
+    .then((res) => {
+        sendResponse(200, res, callback);
+    })
+    .catch((err) => {
+        console.log(err);
+        sendResponse(200, err, callback);
+    });
+};
+
+const getBook = (bookid, callback) => {
+    dbManager.getBook(bookid)
+    .then((res) => {
+        sendResponse(200, res, callback);
+    })
+    .catch((err) => {
+        console.log(err);
+        sendResponse(200, err, callback);
+    });
+};
+
+const addBook = (data, callback) => {
+    data = JSON.parse(data);
+
+    dbManager.addBook(data)
+    .then((res) => {
+        sendResponse(200, res, callback);
+    })
+    .catch((err) => {
+        console.log(err);
+        sendResponse(200, err, callback);
+    });
+};
+
+const updateBook = (bookid, data, callback) => {
+    data = JSON.parse(data);
+    data.bookid = bookid;
+
+    dbManager.updateBook(data)
+    .then((res) => {
+        sendResponse(200, res, callback);
+    })
+    .catch((err) => {
+        console.log(err);
+        sendResponse(200, err, callback);
+    });
+};
+
+const deleteBook = (bookid, callback) => {
+    dbManager.deleteBook(bookid)
     .then((res) => {
         sendResponse(200, res, callback);
     })

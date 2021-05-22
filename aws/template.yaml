@@ -39,7 +39,12 @@ Resources:
                     Type: Api
                     Properties:
                         Path: /users/{userid}
-                        Method: DELETE
+                        Method: DELETE                
+                lambdaGetAllBooks:
+                    Type: Api
+                    Properties:
+                        Path: /books
+                        Method: GET
             Policies:
                 # Policies to allow the execution of the indicated actions to the table described in Resource
                 -   Version: '2012-10-17'
@@ -59,7 +64,53 @@ Resources:
                                         -   ':'
                                         -   Ref: 'AWS::AccountId'
                                         -   ':table/users'
-    
+    booksFunction:
+        Type: 'AWS::Serverless::Function'
+        Properties:
+            # This function uses the Nodejs v8.10 runtime.
+            Runtime: nodejs12.x
+            # This is the Lambda function's handler.
+            Handler: index.usersHandler
+            # The location of the Lambda function code.
+            CodeUri: ./src
+            # Event sources to attach to this function. In this case, we are attaching
+            # multiple API Gateway endpoints to the Lambda function. The function is
+            # called when a HTTP request is made to the API Gateway endpoint.
+            Events:
+                lambdaAddBook:
+                    Type: Api
+                    Properties:
+                        Path: /books
+                        Method: POST
+                lambdaUpdateBook:
+                    Type: Api
+                    Properties:
+                        Path: /books/{bookid}
+                        Method: PUT
+                lambdaGetBook:
+                    Type: Api
+                    Properties:
+                        Path: /books/{bookid}
+                        Method: GET
+                lambdaDeleteBook:
+                    Type: Api
+                    Properties:
+                        Path: /books/{bookid}
+                        Method: DELETE
+    booksTable:
+        Type: 'AWS::DynamoDB::Table'
+        Properties:
+            TableName: books
+            AttributeDefinitions:
+                -   AttributeName: bookid
+                    AttributeType: S
+            KeySchema:
+                -   AttributeName: bookid
+                    KeyType: HASH
+            ProvisionedThroughput:
+                ReadCapacityUnits: 5
+                WriteCapacityUnits: 5
+
     usersTable:
         Type: 'AWS::DynamoDB::Table'
         Properties:
@@ -78,5 +129,5 @@ Outputs:
   # Find out more about other implicit resources you can reference within SAM
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
   PublicApi:
-    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
+    Description: "API Gateway endpoint URL for Prod stage for Books app"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/users/"
