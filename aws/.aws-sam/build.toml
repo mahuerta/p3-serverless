@@ -6,6 +6,6 @@ codeuri = "/home/mangel/Escritorio/Master/AplicacionesNativasEnLaNube/p3-serverl
 runtime = "nodejs12.x"
 source_md5 = ""
 packagetype = "Zip"
-functions = ["usersFunction"]
+functions = ["usersFunction", "booksFunction"]
 
 [layer_build_definitions]
