@@ -40,11 +40,7 @@ Resources:
                     Properties:
                         Path: /users/{userid}
                         Method: DELETE                
-                lambdaGetAllBooks:
-                    Type: Api
-                    Properties:
-                        Path: /books
-                        Method: GET
+
             Policies:
                 # Policies to allow the execution of the indicated actions to the table described in Resource
                 -   Version: '2012-10-17'
@@ -77,6 +73,12 @@ Resources:
             # multiple API Gateway endpoints to the Lambda function. The function is
             # called when a HTTP request is made to the API Gateway endpoint.
             Events:
+                lambdaGetAllBooks:
+                    # Define an API Gateway endpoint that responds to HTTP GET at /users
+                    Type: Api
+                    Properties:
+                        Path: /books
+                        Method: GET
                 lambdaAddBook:
                     Type: Api
                     Properties:
@@ -96,7 +98,8 @@ Resources:
                     Type: Api
                     Properties:
                         Path: /books/{bookid}
-                        Method: DELETE
+                        Method: DELETE                
+
             Policies:
                 # Policies to allow the execution of the indicated actions to the table described in Resource
                 -   Version: '2012-10-17'
