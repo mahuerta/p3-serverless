@@ -155,8 +155,8 @@ const addCommentToBook = async (bookid, data) => {
             "commentid": uuid.v1(),
             "comment": data.comment,
             "score": data.score,
-            "userid": user.userid,
-            "bookid": book.bookid
+            "userid": user.Items[0].userid, // se obtiene por userId 
+            "bookid": book.Item.bookid
         }
     };
 
@@ -267,5 +267,6 @@ module.exports = {
     deleteBook,
     getBook,
     addCommentToBook,
-    deleteCommentFromBook
+    deleteCommentFromBook,
+    getUserComments
 };

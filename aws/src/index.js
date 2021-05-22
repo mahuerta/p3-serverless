@@ -6,10 +6,9 @@ const dbManager = require('./dbManager');
 exports.usersHandler = (event, context, callback) => {
     switch (event.httpMethod) {
         case 'GET' :
-           // if(event.path.includes("comments")){
-             //   getUserComments(event.pathParameters.userid, callback);
-            //}else
-            if (!!event.pathParameters && !!event.pathParameters.userid) {
+            if(event.path.includes("comments")){
+               getUserComments(event.pathParameters.userid, callback);
+            } else if (!!event.pathParameters && !!event.pathParameters.userid) {
                 getUser(event.pathParameters.userid, callback);
             } else {
                 getAllUsers(callback);
