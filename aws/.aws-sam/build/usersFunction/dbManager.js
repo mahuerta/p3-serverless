@@ -26,7 +26,8 @@ const addUser = (data) => {
             "userid": uuid.v1(),
             "nick": data.nick,
             "email": data.email,
-        }
+        },
+        ReturnValues: "UPDATED_OLD"
     };
 
     return docClient.put(params).promise();
@@ -54,15 +55,11 @@ const updateUser = (data) => {
         Key: {
             "userid": data.userid
         },
-        UpdateExpression: "set #na = :n, email = :e",
-        ExpressionAttributeNames: { // Used when there are reserved words in DynamoDB, like name
-            "#na": 'nick'
-        },
+        UpdateExpression: "set email = :e",
         ExpressionAttributeValues: {
-            ":n": data.nick,
             ":e": data.email
         },
-        ReturnValues: "ALL_OLD" // Returns the item content before it was updated
+        ReturnValues: "ALL_NEW" // Returns the item content before it was updated
     };
 
     return docClient.update(params).promise();

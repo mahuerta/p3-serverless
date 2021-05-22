@@ -5,11 +5,12 @@ const dbManager = require('./dbManager');
 
 exports.usersHandler = (event, context, callback) => {
     switch (event.httpMethod) {
-        case 'GET' && !(!!event.pathParameters.userid):
-            getAllUsers(callback);
-            break;
-        case 'GET' && !!event.pathParameters.userid:
-            getUser(callback);
+        case 'GET' :
+            if (!!event.pathParameters && !!event.pathParameters.userid) {
+                getUser(event.pathParameters.userid, callback);
+            } else {
+                getAllUsers(callback);
+            }
             break;
         case 'POST':
             addUser(event.body, callback);
