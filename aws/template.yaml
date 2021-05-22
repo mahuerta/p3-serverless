@@ -97,6 +97,25 @@ Resources:
                     Properties:
                         Path: /books/{bookid}
                         Method: DELETE
+            Policies:
+                # Policies to allow the execution of the indicated actions to the table described in Resource
+                -   Version: '2012-10-17'
+                    Statement: 
+                        -   Effect: Allow
+                            Action:
+                                -   'dynamodb:Scan'
+                                -   'dynamodb:DeleteItem'
+                                -   'dynamodb:GetItem'
+                                -   'dynamodb:PutItem'
+                                -   'dynamodb:UpdateItem'
+                            Resource:
+                                'Fn::Join':
+                                    -   ''
+                                    -   -   'arn:aws:dynamodb:'
+                                        -   Ref: 'AWS::Region'
+                                        -   ':'
+                                        -   Ref: 'AWS::AccountId'
+                                        -   ':table/books'
     booksTable:
         Type: 'AWS::DynamoDB::Table'
         Properties:
