@@ -8,6 +8,9 @@ exports.usersHandler = (event, context, callback) => {
         case 'GET':
             getAllUsers(callback);
             break;
+        case 'GET' && !!event.pathParameters.userid:
+            getUser(callback);
+            break;
         case 'POST':
             addUser(event.body, callback);
             break;
@@ -24,6 +27,17 @@ exports.usersHandler = (event, context, callback) => {
 
 const getAllUsers = (callback) => {
     dbManager.getAllUsers()
+    .then((res) => {
+        sendResponse(200, res, callback);
+    })
+    .catch((err) => {
+        console.log(err);
+        sendResponse(200, err, callback);
+    });
+};
+
+const getUser = (userId, callback) => {
+    dbManager.getUser(userId)
     .then((res) => {
         sendResponse(200, res, callback);
     })

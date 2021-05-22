@@ -32,6 +32,22 @@ const addUser = (data) => {
     return docClient.put(params).promise();
 };
 
+const getUser = (userid) => {
+    const params = {
+        TableName: table,
+        Key: {
+            "userid": userid
+        },
+        ConditionExpression: "userid = :userid",
+        ExpressionAttributeValues: {
+            ":userid": userid
+        },
+        ReturnValues: "ALL_OLD" // Returns the item content before it was deleted
+    };
+
+    return docClient.get(params).promise();
+};
+
 const updateUser = (data) => {
     const params = {
         TableName: table,
@@ -72,5 +88,6 @@ module.exports = {
     getAllUsers,
     addUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    getUser
 };

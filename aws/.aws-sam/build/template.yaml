@@ -22,6 +22,11 @@ Resources:
           Properties:
             Path: /users/{userid}
             Method: PUT
+        lambdaGetUser:
+          Type: Api
+          Properties:
+            Path: /users/{userid}
+            Method: GET
         lambdaDeleteUser:
           Type: Api
           Properties:
