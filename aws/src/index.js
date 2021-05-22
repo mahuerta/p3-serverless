@@ -128,7 +128,7 @@ const deleteUser = (userid, callback) => {
     })
     .catch((err) => {
         console.log(err);
-        sendResponse(200, err, callback);
+        sendResponse(err.status, err.message, callback);
     });
 };
 

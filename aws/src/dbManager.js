@@ -64,7 +64,7 @@ const getUser = (userid) => {
 const getUserComments = async (userid) => {
     const user = await getUser(userid);
     if (!user) {
-        // Retornar error
+        throwException("User not found", 404);
     };
 
     const params = {
@@ -95,8 +95,13 @@ const updateUser = (data) => {
     return docClient.update(params).promise();
 };
 
-const deleteUser = (userid) => {
+const deleteUser = async (userid) => {
     // Comprobar si tiene o no comentarios y dar un error si los tiene.
+    const comments = await getUserComments(userid);
+
+    if(comments.Count>0){
+        throwException("User has comments", 409);
+    }
 
     const params = {
         TableName: tableUsers,
@@ -260,6 +265,14 @@ const deleteBook = (bookid) => {
     return docClient.delete(params).promise();
 };
 
+function throwException(message, status) {
+    throw {
+        "message": message,
+        "status": status
+    };
+    
+ }
+ 
 module.exports = {
     getAllUsers,
     addUser,
