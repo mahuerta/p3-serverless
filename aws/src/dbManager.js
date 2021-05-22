@@ -43,6 +43,8 @@ const getUserByNick = (nick) => {
                 S: nick
             }
         },
+        FilterExpression = "#nick = :nick",  
+
         ReturnValues: "ALL_OLD" // Returns the item content before it was deleted
     };
 
