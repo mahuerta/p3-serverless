@@ -45,7 +45,6 @@ const getUserByNick = (nick) => {
     return docClient.scan(params).promise();
 };
 
-
 const getUser = (userid) => {
     const params = {
         TableName: tableUsers,
@@ -62,40 +61,18 @@ const getUser = (userid) => {
     return docClient.get(params).promise();
 };
 
-const getUserComments = async (userid) => {
-    const user = await getUser(data.userNick);
-    if (!user) {
-        // Retornar error
-    };
-/*
+const getUserComments = (userid) => {
     const params = {
-        TableName: tableBooks,
-        FilterExpression: "#k_comments.#k_ = :v_Compatible_RAM",
-        ExpressionAttributeNames: {
-            "#k_comments": "comments",
-            "#k_": "RAM"
-        },
-        ExpressionAttributeValues: {
-            ":v_Compatible_RAM": "RAM1"
-        }
-
-
-
-        ConditionExpression: "comments.user.userid = :userid",
         ExpressionAttributeValues: {
             ":userid": userid
-        },
-        AttributesToGet: [
-            "comments",
-            "bookid"
-        ],
-        ReturnValues: "ALL_OLD" // Returns the item content before it was deleted
+        }, 
+        FilterExpression: "userid = :userid", 
+        TableName: tableComments
     };
-    */
 
-    return docClient.get(params).promise();
+    return docClient.scan(params).promise();
+
 };
-
 
 const updateUser = (data) => {
     const params = {
@@ -130,7 +107,6 @@ const deleteUser = (userid) => {
 
     return docClient.delete(params).promise();
 };
-
 
 // BOOKS
 const getAllBooks = () => {
@@ -210,7 +186,7 @@ const deleteCommentFromBook = async (bookid, commentid, data) => {
     return docClient.delete(params).promise();
 };
 
-const getBook = (bookid) => {
+const getBook = async (bookid) => {
     const comments = await getBookComments(bookid);
 
     const params = {
@@ -241,7 +217,6 @@ const getBookComments = (bookid) => {
 
     return docClient.scan(params).promise();
 };
-
 
 const updateBook = (data) => {
     const params = {
