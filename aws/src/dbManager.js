@@ -37,9 +37,10 @@ const getUserByNick = (nick) => {
         TableName: tableUsers,
         FilterExpression: "nick = :nick", 
         ExpressionAttributeValues: {
-            ":nick": nick
-        }, 
-
+            ":nick": {
+                S: nick
+            }
+        },
         ReturnValues: "ALL_OLD" // Returns the item content before it was deleted
     };
 
