@@ -7,12 +7,13 @@ AWS.config.update({
 });
 
 const docClient = new AWS.DynamoDB.DocumentClient();
-const table = 'users';
+const tableUsers = 'users';
+const tableBooks = 'books';
 
 // USERS
 const getAllUsers = () => {
     const params = {
-        TableName: table
+        TableName: tableUsers
     };
 
     return docClient.scan(params).promise();
@@ -20,7 +21,7 @@ const getAllUsers = () => {
 
 const addUser = (data) => {
     const params = {
-        TableName: table,
+        TableName: tableUsers,
         Item: {
             "userid": uuid.v1(),
             "nick": data.nick,
@@ -33,7 +34,7 @@ const addUser = (data) => {
 
 const getUser = (userid) => {
     const params = {
-        TableName: table,
+        TableName: tableUsers,
         Key: {
             "userid": userid
         },
@@ -49,7 +50,7 @@ const getUser = (userid) => {
 
 const updateUser = (data) => {
     const params = {
-        TableName: table,
+        TableName: tableUsers,
         Key: {
             "userid": data.userid
         },
@@ -65,7 +66,7 @@ const updateUser = (data) => {
 
 const deleteUser = (userid) => {
     const params = {
-        TableName: table,
+        TableName: tableUsers,
         Key: {
             "userid": userid
         },
@@ -83,7 +84,7 @@ const deleteUser = (userid) => {
 // BOOKS
 const getAllBooks = () => {
     const params = {
-        TableName: table
+        TableName: tableBooks
     };
 
     return docClient.scan(params).promise();
@@ -91,7 +92,7 @@ const getAllBooks = () => {
 
 const addBook = (data) => {
     const params = {
-        TableName: table,
+        TableName: tableBooks,
         Item: {
             "bookid": uuid.v1(),
             "author": data.author,
@@ -107,7 +108,7 @@ const addBook = (data) => {
 
 const getBook = (bookid) => {
     const params = {
-        TableName: table,
+        TableName: tableBooks,
         Key: {
             "bookid": bookid
         },
@@ -123,7 +124,7 @@ const getBook = (bookid) => {
 
 const updateBook = (data) => {
     const params = {
-        TableName: table,
+        TableName: tableBooks,
         Key: {
             "bookid": data.bookid
         },
@@ -143,7 +144,7 @@ const updateBook = (data) => {
 
 const deleteBook = (bookid) => {
     const params = {
-        TableName: table,
+        TableName: tableBooks,
         Key: {
             "bookid": bookid
         },
