@@ -117,6 +117,8 @@ const updateUser = (data) => {
 };
 
 const deleteUser = (userid) => {
+    // Comprobar si tiene o no comentarios y dar un error si los tiene.
+
     const params = {
         TableName: tableUsers,
         Key: {
