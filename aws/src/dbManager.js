@@ -34,17 +34,13 @@ const addUser = (data) => {
 
 const getUserByNick = (nick) => {
     const params = {
-        TableName: tableUsers,
-        ExpressionAttributeNames: {
-            "#nick": "nick",
-        },
         ExpressionAttributeValues: {
             ":nick": {
                 S: nick
             }
-        },
-        FilterExpression = "#nick = :nick",  
-
+        }, 
+        FilterExpression: "nick = :nick", 
+        TableName: tableUsers,  
         ReturnValues: "ALL_OLD" // Returns the item content before it was deleted
     };
 
