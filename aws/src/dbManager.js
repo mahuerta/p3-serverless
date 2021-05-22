@@ -35,9 +35,6 @@ const addUser = (data) => {
 const getUserByNick = (nick) => {
     const params = {
         TableName: tableUsers,
-        Key: {
-            "nick": nick
-        },
         ConditionExpression: "nick = :nick",
         ExpressionAttributeValues: {
             ":nick": nick
