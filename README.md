@@ -89,8 +89,7 @@ Vamos a hacer un ejemplo de alguna de las más importantes pasando por las opera
 
     | verb | url                                 |
     |------|-------------------------------------|
-    | GET | 
-    https://5pleqicn20.execute-api.us-east-1.amazonaws.com/Prod/books/476127c0-bd8d-11eb-95e2-3530356b7885 |
+    | GET | https://5pleqicn20.execute-api.us-east-1.amazonaws.com/Prod/books/476127c0-bd8d-11eb-95e2-3530356b7885 |
 
     Respuesta:
     ```
