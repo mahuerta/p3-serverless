@@ -20,7 +20,7 @@ const getAllUsers = () => {
     return docClient.scan(params).promise();
 };
 
-const addUser = (data) => {
+const addUser = async (data) => {
     const params = {
         TableName: tableUsers,
         Item: {
@@ -29,8 +29,9 @@ const addUser = (data) => {
             "email": data.email,
         }
     };
+    await docClient.put(params).promise();
 
-    return docClient.put(params).promise();
+    return params.Item;
 };
 
 const getUserByNick = (nick) => {
@@ -135,7 +136,7 @@ const getAllBooks = () => {
     return docClient.scan(params).promise();
 };
 
-const addBook = (data) => {
+const addBook = async (data) => {
     const params = {
         TableName: tableBooks,
         Item: {
@@ -148,7 +149,8 @@ const addBook = (data) => {
         }
     };
 
-    return docClient.put(params).promise();
+    await docClient.put(params).promise()
+    return params.Item;
 };
 
 const addCommentToBook = async (bookid, data) => {
@@ -175,7 +177,9 @@ const addCommentToBook = async (bookid, data) => {
         }
     };
 
-    return docClient.put(params).promise();
+    await docClient.put(params).promise()
+
+    return params.Item;
 
 };
 
