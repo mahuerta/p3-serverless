@@ -64,12 +64,24 @@ Vamos a hacer un ejemplo de alguna de las más importantes pasando por las opera
 
     | verb | url                                 |
     |------|-------------------------------------|
-    | GET | https://g286k7v4s3.execute-api.us-east-1.amazonaws.com/prod/books/ |
+    | GET | https://5pleqicn20.execute-api.us-east-1.amazonaws.com/Prod/books/ |
 
     Respuesta:
     ```
-
-
+    {
+      "Items": [
+          {
+              "bookid": "476127c0-bd8d-11eb-95e2-3530356b7885",
+              "title": "Nuevo libro 2"
+          },
+          {
+              "bookid": "45385450-bd8d-11eb-95e2-3530356b7885",
+              "title": "Nuevo libro 1"
+          }
+      ],
+      "Count": 2,
+      "ScannedCount": 2
+    }
     ```
 
 -  ### Obtener un único libro con los comentarios asociados. En los comentarios deberá incluirse el nombre del usuario.
@@ -78,12 +90,34 @@ Vamos a hacer un ejemplo de alguna de las más importantes pasando por las opera
     | verb | url                                 |
     |------|-------------------------------------|
     | GET | 
-    https://g286k7v4s3.execute-api.us-east-1.amazonaws.com/prod/books/4f0a91e0-bb2c-11eb-bfa4-098219c2d3aa |
+    https://5pleqicn20.execute-api.us-east-1.amazonaws.com/Prod/books/476127c0-bd8d-11eb-95e2-3530356b7885 |
 
     Respuesta:
     ```
-
-
+    {
+        "Item": {
+            "summary": "resumen",
+            "publicationYear": 1996,
+            "publisher": "editor",
+            "bookid": "476127c0-bd8d-11eb-95e2-3530356b7885",
+            "title": "Nuevo libro 2",
+            "author": "autor",
+            "comments": {
+                "Items": [
+                    {
+                        "userNick": "userComments",
+                        "score": 1,
+                        "comment": "Book 2 comment from user 1",
+                        "commentid": "9435bc00-bd8d-11eb-95e2-3530356b7885",
+                        "bookid": "476127c0-bd8d-11eb-95e2-3530356b7885",
+                        "userid": "806679d0-bd8d-11eb-a76b-43250ec2daff"
+                    }
+                ],
+                "Count": 1,
+                "ScannedCount": 1
+            }
+        }
+    }
     ```
 
 
@@ -93,13 +127,33 @@ Vamos a hacer un ejemplo de alguna de las más importantes pasando por las opera
 
     | verb | url                                 |
     |------|-------------------------------------|
-    | GET | https://g286k7v4s3.execute-api.us-east-1.amazonaws.com/prod/users/2f3527e0-bb2c-11eb-9893-31d023da57e67/comments |
+    | GET | https://5pleqicn20.execute-api.us-east-1.amazonaws.com/Prod/users/806679d0-bd8d-11eb-a76b-43250ec2daff/comments |
 
 
     Respuesta:
     ```
-
-
+      {
+      "Items": [
+          {
+              "userNick": "userComments",
+              "score": 1,
+              "comment": "Book 2 comment 2 from user 1",
+              "commentid": "d25b0170-bd8d-11eb-95e2-3530356b7885",
+              "bookid": "476127c0-bd8d-11eb-95e2-3530356b7885",
+              "userid": "806679d0-bd8d-11eb-a76b-43250ec2daff"
+          },
+          {
+              "userNick": "userComments",
+              "score": 1,
+              "comment": "Book 2 comment from user 1",
+              "commentid": "9435bc00-bd8d-11eb-95e2-3530356b7885",
+              "bookid": "476127c0-bd8d-11eb-95e2-3530356b7885",
+              "userid": "806679d0-bd8d-11eb-a76b-43250ec2daff"
+          }
+      ],
+      "Count": 2,
+      "ScannedCount": 2
+    }
     ```
 
 
@@ -110,7 +164,7 @@ Vamos a hacer un ejemplo de alguna de las más importantes pasando por las opera
 
       | verb | url                                 |
       |------|-------------------------------------|
-      | POST | https://g286k7v4s3.execute-api.us-east-1.amazonaws.com/prod/users/ |
+      | POST | https://5pleqicn20.execute-api.us-east-1.amazonaws.com/Prod/users/ |
 
       Ejemplo de body:
 
@@ -119,33 +173,41 @@ Vamos a hacer un ejemplo de alguna de las más importantes pasando por las opera
         "email": "userWithoutComments@email.es",
         "nick": "userWithoutComments"
       }
-
       ```
 
       Respuesta:
       ```
-
-
+      {
+          "userid": "8fb6f530-bd8e-11eb-a76b-43250ec2daff",
+          "nick": "userWithoutComments",
+          "email": "userWithoutComments@email.es"
+      }
       ```
 
       Borramos el usuario:
 
       | verb | url                                 |
       |------|-------------------------------------|
-      | DELETE | https://g286k7v4s3.execute-api.us-east-1.amazonaws.com/prod/users/2f3527e0-bb2c-11eb-9893-31d02da57e67 |
+      | DELETE | https://5pleqicn20.execute-api.us-east-1.amazonaws.com/Prod/users/8fb6f530-bd8e-11eb-a76b-43250ec2daff |
 
       Respuesta:
       ```
-      
-
+      {
+        "Attributes": {
+            "email": "userWithoutComments@email.es",
+            "nick": "userWithoutComments",
+            "userid": "8fb6f530-bd8e-11eb-a76b-43250ec2daff"
+          }
+      }
       ```
+
     - Usuario con comentarios:
 
     Creamos un usuario:
 
       | verb | url                                 |
       |------|-------------------------------------|
-      | POST | https://g286k7v4s3.execute-api.us-east-1.amazonaws.com/prod/users/ |
+      | POST | https://5pleqicn20.execute-api.us-east-1.amazonaws.com/Prod/users/ |
 
       Ejemplo de body:
 
@@ -154,20 +216,22 @@ Vamos a hacer un ejemplo de alguna de las más importantes pasando por las opera
         "email": "userWithComments@email.es",
         "nick": "userWithComments"
       }
-
       ```
 
       Respuesta:
       ```
-
-
+      {
+          "userid": "806679d0-bd8d-11eb-a76b-43250ec2daff",
+          "nick": "userComments",
+          "email": "userComments@email.es"
+      }
       ```
 
     Creamos un libro:
 
       | verb | url                                 |
       |------|-------------------------------------|
-      | POST | https://g286k7v4s3.execute-api.us-east-1.amazonaws.com/prod/books/ |
+      | POST | https://5pleqicn20.execute-api.us-east-1.amazonaws.com/Prod/books/ |
 
       Ejemplo de body:
 
@@ -179,13 +243,18 @@ Vamos a hacer un ejemplo de alguna de las más importantes pasando por las opera
         "publisher": "editor",
         "publicationYear": 1996
       }
-
       ```
 
       Respuesta:
       ```
-
-
+      {
+          "bookid": "476127c0-bd8d-11eb-95e2-3530356b7885",
+          "author": "autor",
+          "title": "Nuevo libro 2",
+          "summary": "resumen",
+          "publisher": "editor",
+          "publicationYear": 1996
+      }
       ```
 
 
@@ -193,31 +262,36 @@ Vamos a hacer un ejemplo de alguna de las más importantes pasando por las opera
 
       | verb | url                                 |
       |------|-------------------------------------|
-      | POST | https://g286k7v4s3.execute-api.us-east-1.amazonaws.com/prod/books/4f0a91e0-bb2c-11eb-bfa4-098219c2d3aa/comments/ |
+      | POST | https://5pleqicn20.execute-api.us-east-1.amazonaws.com/Prod/books/476127c0-bd8d-11eb-95e2-3530356b7885/comments/ |
 
       Ejemplo de body:
 
       ```
       {
         "comment": "Book 2 comment from user 1",
-        "userNick": "userWithComments",
+        "userNick": "userComments",
         "score": 1
-      }
-
+     }
       ```
 
       Respuesta:
       ```
-
-
+      {
+          "commentid": "d25b0170-bd8d-11eb-95e2-3530356b7885",
+          "comment": "Book 2 comment 2 from user 1",
+          "score": 1,
+          "userid": "806679d0-bd8d-11eb-a76b-43250ec2daff",
+          "userNick": "userComments",
+          "bookid": "476127c0-bd8d-11eb-95e2-3530356b7885"
+      }
       ```
 
     Borramos el usuario:
       | verb | url                                 |
       |------|-------------------------------------|
-      | DELETE | https://g286k7v4s3.execute-api.us-east-1.amazonaws.com/prod/users/2f3527e0-bb2c-11eb-9893-31d02da57e67 |
+      | DELETE | https://5pleqicn20.execute-api.us-east-1.amazonaws.com/Prod/users/806679d0-bd8d-11eb-a76b-43250ec2daff |
 
-      Respuesta:
+      Respuesta: 409
       ```
-
+      "User has comments"
       ```
