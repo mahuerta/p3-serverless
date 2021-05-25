@@ -30,25 +30,27 @@ Proyecto para crear una aplicación Serverless en AWS con funciones lambda.
 
 Como se puede comprobar hemos optado por un diagrama parecido a lo que se podría realizar en una BBDD relacional de MYSQL con **3 tablas**.
 
-Hemos añadido el ``userNick`` en la tabla de comments porque a pesar de tener redundancia nos permite retornar el nombre de la persona que ha escrito el comentario. Además, al ser un dato que no se puede actualizar (sólo se actualiza el email) no nos provoca más problemas.
+Hemos añadido el ``userNick`` en la tabla de comments porque, a pesar de tener redundancia, nos permite retornar el nombre de la persona que ha escrito el comentario. Además, al ser un dato que no se puede actualizar (sólo se actualiza el e-mail) no nos provoca más problemas.
 
 Hemos optado por utilizar **2 funciones lambda**:
-- **booksFunction**: Dispone de políticas con permiso de lectura actualización, borrado y creación de la tabla de libros. Además, de consulta de usuarios y comentarios.
+- **booksFunction**: Dispone de políticas con permiso de lectura actualización, borrado y creación de la tabla de libros y comentarios. Además, de consulta de usuarios.
 - **usersFunction**: Dispone de políticas con permiso de lectura actualización, borrado y creación de la tabla de usuarios. Además, de consulta de libros y comentarios.
 
 
 # Despliegue
 1. Desde la consola en la raíz del proyecto, nos situamos en la carpeta de aws:
-    > cd /aws
+    ```
+    cd /aws
+    ```
 
 2. Construcción y despliegue:
     ```
     sam build
     sam deploy --guided
     ```
-3. Siguiendo los pasos dispondremos de la ruta de la aplicación en 
+3. Siguiendo los pasos dispondremos de la ruta de la aplicación en producción en: 
 
-    https://``${ServerlessRestApi}``.execute-api.``${AWS::Region}``.amazonaws.com/Prod/"
+    https://``${ServerlessRestApi}``.execute-api.``${AWS::Region}``.amazonaws.com/prod/"
 
 # Peticiones 
 Adjuntamos un archivo postman con las diferentes peticiones que podemos realizar a la aplicación.
@@ -62,7 +64,7 @@ Vamos a hacer un ejemplo de alguna de las más importantes pasando por las opera
 
     | verb | url                                 |
     |------|-------------------------------------|
-    | GET | https://g286k7v4s3.execute-api.us-east-1.amazonaws.com/Prod/books/ |
+    | GET | https://g286k7v4s3.execute-api.us-east-1.amazonaws.com/prod/books/ |
 
     Respuesta:
     ```
@@ -76,7 +78,7 @@ Vamos a hacer un ejemplo de alguna de las más importantes pasando por las opera
     | verb | url                                 |
     |------|-------------------------------------|
     | GET | 
-    https://g286k7v4s3.execute-api.us-east-1.amazonaws.com/Prod/books/4f0a91e0-bb2c-11eb-bfa4-098219c2d3aa |
+    https://g286k7v4s3.execute-api.us-east-1.amazonaws.com/prod/books/4f0a91e0-bb2c-11eb-bfa4-098219c2d3aa |
 
     Respuesta:
     ```
@@ -91,7 +93,7 @@ Vamos a hacer un ejemplo de alguna de las más importantes pasando por las opera
 
     | verb | url                                 |
     |------|-------------------------------------|
-    | GET | https://g286k7v4s3.execute-api.us-east-1.amazonaws.com/Prod/users/2f3527e0-bb2c-11eb-9893-31d023da57e67/comments |
+    | GET | https://g286k7v4s3.execute-api.us-east-1.amazonaws.com/prod/users/2f3527e0-bb2c-11eb-9893-31d023da57e67/comments |
 
 
     Respuesta:
@@ -108,7 +110,7 @@ Vamos a hacer un ejemplo de alguna de las más importantes pasando por las opera
 
       | verb | url                                 |
       |------|-------------------------------------|
-      | POST | https://g286k7v4s3.execute-api.us-east-1.amazonaws.com/Prod/users/ |
+      | POST | https://g286k7v4s3.execute-api.us-east-1.amazonaws.com/prod/users/ |
 
       Ejemplo de body:
 
@@ -130,11 +132,11 @@ Vamos a hacer un ejemplo de alguna de las más importantes pasando por las opera
 
       | verb | url                                 |
       |------|-------------------------------------|
-      | DELETE | https://g286k7v4s3.execute-api.us-east-1.amazonaws.com/Prod/users/2f3527e0-bb2c-11eb-9893-31d02da57e67 |
+      | DELETE | https://g286k7v4s3.execute-api.us-east-1.amazonaws.com/prod/users/2f3527e0-bb2c-11eb-9893-31d02da57e67 |
 
       Respuesta:
       ```
-      a
+      
 
       ```
     - Usuario con comentarios:
@@ -143,7 +145,7 @@ Vamos a hacer un ejemplo de alguna de las más importantes pasando por las opera
 
       | verb | url                                 |
       |------|-------------------------------------|
-      | POST | https://g286k7v4s3.execute-api.us-east-1.amazonaws.com/Prod/users/ |
+      | POST | https://g286k7v4s3.execute-api.us-east-1.amazonaws.com/prod/users/ |
 
       Ejemplo de body:
 
@@ -165,7 +167,7 @@ Vamos a hacer un ejemplo de alguna de las más importantes pasando por las opera
 
       | verb | url                                 |
       |------|-------------------------------------|
-      | POST | https://g286k7v4s3.execute-api.us-east-1.amazonaws.com/Prod/books/ |
+      | POST | https://g286k7v4s3.execute-api.us-east-1.amazonaws.com/prod/books/ |
 
       Ejemplo de body:
 
@@ -191,7 +193,7 @@ Vamos a hacer un ejemplo de alguna de las más importantes pasando por las opera
 
       | verb | url                                 |
       |------|-------------------------------------|
-      | POST | https://g286k7v4s3.execute-api.us-east-1.amazonaws.com/Prod/books/4f0a91e0-bb2c-11eb-bfa4-098219c2d3aa/comments/ |
+      | POST | https://g286k7v4s3.execute-api.us-east-1.amazonaws.com/prod/books/4f0a91e0-bb2c-11eb-bfa4-098219c2d3aa/comments/ |
 
       Ejemplo de body:
 
@@ -213,7 +215,7 @@ Vamos a hacer un ejemplo de alguna de las más importantes pasando por las opera
     Borramos el usuario:
       | verb | url                                 |
       |------|-------------------------------------|
-      | DELETE | https://g286k7v4s3.execute-api.us-east-1.amazonaws.com/Prod/users/2f3527e0-bb2c-11eb-9893-31d02da57e67 |
+      | DELETE | https://g286k7v4s3.execute-api.us-east-1.amazonaws.com/prod/users/2f3527e0-bb2c-11eb-9893-31d02da57e67 |
 
       Respuesta:
       ```
