@@ -160,138 +160,138 @@ Vamos a hacer un ejemplo de alguna de las más importantes pasando por las opera
 -  ### No se podrán borrar usuarios con comentarios.
     - Usuario sin comentarios:
 
+        Creamos un usuario:
+
+        | verb | url                                 |
+        |------|-------------------------------------|
+        | POST | https://5pleqicn20.execute-api.us-east-1.amazonaws.com/Prod/users/ |
+
+        Ejemplo de body:
+
+        ```
+        {
+          "email": "userWithoutComments@email.es",
+          "nick": "userWithoutComments"
+        }
+        ```
+
+        Respuesta:
+        ```
+        {
+            "userid": "8fb6f530-bd8e-11eb-a76b-43250ec2daff",
+            "nick": "userWithoutComments",
+            "email": "userWithoutComments@email.es"
+        }
+        ```
+
+        Borramos el usuario:
+
+        | verb | url                                 |
+        |------|-------------------------------------|
+        | DELETE | https://5pleqicn20.execute-api.us-east-1.amazonaws.com/Prod/users/8fb6f530-bd8e-11eb-a76b-43250ec2daff |
+
+        Respuesta:
+        ```
+        {
+          "Attributes": {
+              "email": "userWithoutComments@email.es",
+              "nick": "userWithoutComments",
+              "userid": "8fb6f530-bd8e-11eb-a76b-43250ec2daff"
+            }
+        }
+        ```
+
+      - Usuario con comentarios:
+
       Creamos un usuario:
 
-      | verb | url                                 |
-      |------|-------------------------------------|
-      | POST | https://5pleqicn20.execute-api.us-east-1.amazonaws.com/Prod/users/ |
+        | verb | url                                 |
+        |------|-------------------------------------|
+        | POST | https://5pleqicn20.execute-api.us-east-1.amazonaws.com/Prod/users/ |
 
-      Ejemplo de body:
+        Ejemplo de body:
 
-      ```
-      {
-        "email": "userWithoutComments@email.es",
-        "nick": "userWithoutComments"
-      }
-      ```
+        ```
+        {
+          "email": "userWithComments@email.es",
+          "nick": "userWithComments"
+        }
+        ```
 
-      Respuesta:
-      ```
-      {
-          "userid": "8fb6f530-bd8e-11eb-a76b-43250ec2daff",
-          "nick": "userWithoutComments",
-          "email": "userWithoutComments@email.es"
-      }
-      ```
+        Respuesta:
+        ```
+        {
+            "userid": "806679d0-bd8d-11eb-a76b-43250ec2daff",
+            "nick": "userComments",
+            "email": "userComments@email.es"
+        }
+        ```
 
-      Borramos el usuario:
+      Creamos un libro:
 
-      | verb | url                                 |
-      |------|-------------------------------------|
-      | DELETE | https://5pleqicn20.execute-api.us-east-1.amazonaws.com/Prod/users/8fb6f530-bd8e-11eb-a76b-43250ec2daff |
+        | verb | url                                 |
+        |------|-------------------------------------|
+        | POST | https://5pleqicn20.execute-api.us-east-1.amazonaws.com/Prod/books/ |
 
-      Respuesta:
-      ```
-      {
-        "Attributes": {
-            "email": "userWithoutComments@email.es",
-            "nick": "userWithoutComments",
-            "userid": "8fb6f530-bd8e-11eb-a76b-43250ec2daff"
-          }
-      }
-      ```
+        Ejemplo de body:
 
-    - Usuario con comentarios:
-
-    Creamos un usuario:
-
-      | verb | url                                 |
-      |------|-------------------------------------|
-      | POST | https://5pleqicn20.execute-api.us-east-1.amazonaws.com/Prod/users/ |
-
-      Ejemplo de body:
-
-      ```
-      {
-        "email": "userWithComments@email.es",
-        "nick": "userWithComments"
-      }
-      ```
-
-      Respuesta:
-      ```
-      {
-          "userid": "806679d0-bd8d-11eb-a76b-43250ec2daff",
-          "nick": "userComments",
-          "email": "userComments@email.es"
-      }
-      ```
-
-    Creamos un libro:
-
-      | verb | url                                 |
-      |------|-------------------------------------|
-      | POST | https://5pleqicn20.execute-api.us-east-1.amazonaws.com/Prod/books/ |
-
-      Ejemplo de body:
-
-      ```
-      {
-        "author": "autor",
-        "title": "Nuevo libro",
-        "summary": "resumen",
-        "publisher": "editor",
-        "publicationYear": 1996
-      }
-      ```
-
-      Respuesta:
-      ```
-      {
-          "bookid": "476127c0-bd8d-11eb-95e2-3530356b7885",
+        ```
+        {
           "author": "autor",
-          "title": "Nuevo libro 2",
+          "title": "Nuevo libro",
           "summary": "resumen",
           "publisher": "editor",
           "publicationYear": 1996
-      }
-      ```
+        }
+        ```
+
+        Respuesta:
+        ```
+        {
+            "bookid": "476127c0-bd8d-11eb-95e2-3530356b7885",
+            "author": "autor",
+            "title": "Nuevo libro 2",
+            "summary": "resumen",
+            "publisher": "editor",
+            "publicationYear": 1996
+        }
+        ```
 
 
-    Creamos un comentario en el libro anterior con el nick del usuario que acabamos de dar de alta:
+      Creamos un comentario en el libro anterior con el nick del usuario que acabamos de dar de alta:
 
-      | verb | url                                 |
-      |------|-------------------------------------|
-      | POST | https://5pleqicn20.execute-api.us-east-1.amazonaws.com/Prod/books/476127c0-bd8d-11eb-95e2-3530356b7885/comments/ |
+        | verb | url                                 |
+        |------|-------------------------------------|
+        | POST | https://5pleqicn20.execute-api.us-east-1.amazonaws.com/Prod/books/476127c0-bd8d-11eb-95e2-3530356b7885/comments/ |
 
-      Ejemplo de body:
+        Ejemplo de body:
 
-      ```
-      {
-        "comment": "Book 2 comment from user 1",
-        "userNick": "userComments",
-        "score": 1
-     }
-      ```
-
-      Respuesta:
-      ```
-      {
-          "commentid": "d25b0170-bd8d-11eb-95e2-3530356b7885",
-          "comment": "Book 2 comment 2 from user 1",
-          "score": 1,
-          "userid": "806679d0-bd8d-11eb-a76b-43250ec2daff",
+        ```
+        {
+          "comment": "Book 2 comment from user 1",
           "userNick": "userComments",
-          "bookid": "476127c0-bd8d-11eb-95e2-3530356b7885"
-      }
-      ```
+          "score": 1
+       }
+        ```
 
-    Borramos el usuario:
-      | verb | url                                 |
-      |------|-------------------------------------|
-      | DELETE | https://5pleqicn20.execute-api.us-east-1.amazonaws.com/Prod/users/806679d0-bd8d-11eb-a76b-43250ec2daff |
+        Respuesta:
+        ```
+        {
+            "commentid": "d25b0170-bd8d-11eb-95e2-3530356b7885",
+            "comment": "Book 2 comment 2 from user 1",
+            "score": 1,
+            "userid": "806679d0-bd8d-11eb-a76b-43250ec2daff",
+            "userNick": "userComments",
+            "bookid": "476127c0-bd8d-11eb-95e2-3530356b7885"
+        }
+        ```
 
-      Respuesta: 409
-      ```
-      "User has comments"
-      ```
+      Borramos el usuario:
+        | verb | url                                 |
+        |------|-------------------------------------|
+        | DELETE | https://5pleqicn20.execute-api.us-east-1.amazonaws.com/Prod/users/806679d0-bd8d-11eb-a76b-43250ec2daff |
+
+        Respuesta: 409
+        ```
+        "User has comments"
+        ```
