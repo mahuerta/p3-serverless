@@ -50,7 +50,7 @@ Hemos optado por utilizar **2 funciones lambda**:
     ```
 3. Siguiendo los pasos dispondremos de la ruta de la aplicación en producción en: 
 
-    https://``${ServerlessRestApi}``.execute-api.``${AWS::Region}``.amazonaws.com/prod/"
+    https://``${ServerlessRestApi}``.execute-api.``${AWS::Region}``.amazonaws.com/Prod/"
 
 # Peticiones 
 Adjuntamos un archivo postman con las diferentes peticiones que podemos realizar a la aplicación.
